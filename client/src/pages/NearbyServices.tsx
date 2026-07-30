@@ -49,7 +49,7 @@ const NearbyServices: React.FC = () => {
 
   const fetchServices = async (lat: number, lng: number) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/services/nearby?lat=${lat}&lng=${lng}&radius=20000`);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/services/nearby?lat=${lat}&lng=${lng}&radius=20000`);
       setServices(data);
     } catch (err) {
       console.error(err);

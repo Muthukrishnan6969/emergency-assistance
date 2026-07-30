@@ -15,7 +15,7 @@ const AdminDashboard: React.FC = () => {
   const fetchData = async (model: string) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get(`http://localhost:5000/api/admin/data/${model}`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/data/${model}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response.data);

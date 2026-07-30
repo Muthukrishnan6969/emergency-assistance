@@ -24,7 +24,7 @@ const FirstAidDetail: React.FC = () => {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/guides/${category}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/guides/${category}`);
         setGuide(data);
       } catch (err) {
         console.error(err);
