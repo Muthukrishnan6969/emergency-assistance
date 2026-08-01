@@ -16,21 +16,31 @@ const seedData = async () => {
     await FireStation.deleteMany();
     await FirstAidGuide.deleteMany();
 
-    // Create Dummy Hospitals
+    // Create Dummy Hospitals (New York)
     const lat = 40.7128;
     const lng = -74.0060;
+
+    // Create Dummy Hospitals (Tamil Nadu - Chennai)
+    const tnLat = 13.0827;
+    const tnLng = 80.2707;
 
     await Hospital.create([
       { name: 'City General Hospital', address: '123 Main St', phone: '123-456-7890', location: { type: 'Point', coordinates: [lng + 0.01, lat + 0.01] } },
       { name: 'Mercy Care Medical Center', address: '456 Oak Ave', phone: '987-654-3210', location: { type: 'Point', coordinates: [lng - 0.02, lat - 0.01] } },
+      { name: 'Chennai General Hospital', address: 'EVR Periyar Salai, Park Town', phone: '044-25304000', location: { type: 'Point', coordinates: [tnLng + 0.002, tnLat + 0.001] } },
+      { name: 'Apollo Hospitals Greams Road', address: '21 Greams Lane, Off Greams Road', phone: '044-28293333', location: { type: 'Point', coordinates: [tnLng - 0.015, tnLat - 0.022] } },
     ]);
 
     await PoliceStation.create([
       { name: 'Downtown Precinct', address: '789 Police Blvd', phone: '111-222-3333', location: { type: 'Point', coordinates: [lng + 0.015, lat - 0.005] } },
+      { name: 'Egmore Police Station', address: 'Pantheon Road, Egmore', phone: '044-23452350', location: { type: 'Point', coordinates: [tnLng - 0.012, tnLat - 0.005] } },
+      { name: 'T. Nagar Police Station', address: 'South Boag Road, T. Nagar', phone: '044-23452600', location: { type: 'Point', coordinates: [tnLng - 0.035, tnLat - 0.045] } },
     ]);
 
     await FireStation.create([
       { name: 'Engine 42', address: '101 Firehouse Row', phone: '444-555-6666', location: { type: 'Point', coordinates: [lng - 0.01, lat + 0.015] } },
+      { name: 'Egmore Fire Station', address: 'Rukmani Lakshmipathi Road, Egmore', phone: '044-28554316', location: { type: 'Point', coordinates: [tnLng - 0.010, tnLat - 0.003] } },
+      { name: 'Guindy Fire Station', address: 'GST Road, Guindy', phone: '044-22341233', location: { type: 'Point', coordinates: [tnLng - 0.055, tnLat - 0.075] } },
     ]);
 
     // First Aid Guides
