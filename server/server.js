@@ -6,11 +6,24 @@ const connectDB = require('./config/db');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Connect Database
 connectDB();
+
+// Health check and Keep-Alive ping endpoints for Render/Cron pings
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+});
+
+app.get('/api/ping', (req, res) => {
+  res.send('pong');
+});
 
 // Routes
 app.use('/api/services', require('./routes/servicesRoutes'));
