@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, Map, BookOpen, Home, PhoneCall } from 'lucide-react';
+import { AlertCircle, Map, BookOpen, Home, PhoneCall, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   return (
     <>
       {/* Top Main Navigation Header */}
-      <header className="bg-gradient-to-r from-red-600 to-rose-700 text-white shadow-md sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-red-600 via-rose-600 to-indigo-700 text-white shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="bg-white/20 p-1.5 rounded-xl group-hover:bg-white/30 transition-all">
@@ -25,13 +25,25 @@ const Header: React.FC = () => {
                 Emergency Assistance
               </h1>
               <span className="text-[10px] text-red-200 uppercase tracking-widest hidden xs:inline">
-                Instant Rescue & First Aid
+                AI Dispatch & Rescue Platform
               </span>
             </div>
           </Link>
 
           {/* Desktop & Tablet Navigation */}
           <nav className="flex items-center space-x-2 sm:space-x-3">
+            <Link 
+              to="/ai-dispatch" 
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
+                isActive('/ai-dispatch') 
+                  ? 'bg-white text-indigo-700 shadow-sm' 
+                  : 'bg-indigo-950/40 hover:bg-indigo-950/70 text-indigo-100 border border-indigo-300/30'
+              }`}
+            >
+              <Sparkles size={16} className="text-yellow-300 animate-pulse" />
+              <span>AI Dispatch</span>
+            </Link>
+
             <Link 
               to="/nearby" 
               className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
@@ -53,7 +65,7 @@ const Header: React.FC = () => {
               }`}
             >
               <BookOpen size={16} />
-              <span>First Aid Guide</span>
+              <span>First Aid</span>
             </Link>
 
             <a 
@@ -68,52 +80,67 @@ const Header: React.FC = () => {
       </header>
 
       {/* Mobile Sticky Bottom Navigation Bar for One-Thumb Access */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-[1000] bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl py-1.5 px-4">
-        <div className="flex items-center justify-around max-w-md mx-auto">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-[1000] bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl py-1.5 px-3">
+        <div className="flex items-center justify-between max-w-md mx-auto">
           <Link 
             to="/" 
-            className={`flex flex-col items-center py-1 px-3 rounded-xl transition-all ${
+            className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
               isActive('/') 
                 ? 'text-red-600 font-bold scale-105' 
                 : 'text-gray-500 font-medium'
             }`}
           >
-            <Home size={20} />
-            <span className="text-[10px] mt-0.5">SOS Home</span>
+            <Home size={19} />
+            <span className="text-[9px] mt-0.5">SOS Home</span>
+          </Link>
+
+          <Link 
+            to="/ai-dispatch" 
+            className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
+              isActive('/ai-dispatch') 
+                ? 'text-indigo-600 font-black scale-105' 
+                : 'text-indigo-600/80 font-bold'
+            }`}
+          >
+            <div className="relative">
+              <Sparkles size={19} className="text-indigo-600 animate-pulse" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            </div>
+            <span className="text-[9px] mt-0.5">AI Dispatch</span>
           </Link>
 
           <Link 
             to="/nearby" 
-            className={`flex flex-col items-center py-1 px-3 rounded-xl transition-all ${
+            className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
               isActive('/nearby') 
                 ? 'text-red-600 font-bold scale-105' 
                 : 'text-gray-500 font-medium'
             }`}
           >
-            <Map size={20} />
-            <span className="text-[10px] mt-0.5">Live Map</span>
+            <Map size={19} />
+            <span className="text-[9px] mt-0.5">Live Map</span>
           </Link>
 
           <Link 
             to="/first-aid" 
-            className={`flex flex-col items-center py-1 px-3 rounded-xl transition-all ${
+            className={`flex flex-col items-center py-1 px-2 rounded-xl transition-all ${
               isActive('/first-aid') 
                 ? 'text-red-600 font-bold scale-105' 
                 : 'text-gray-500 font-medium'
             }`}
           >
-            <BookOpen size={20} />
-            <span className="text-[10px] mt-0.5">First Aid</span>
+            <BookOpen size={19} />
+            <span className="text-[9px] mt-0.5">First Aid</span>
           </Link>
 
           <a 
             href="tel:112"
-            className="flex flex-col items-center py-1 px-3 rounded-xl text-red-600 font-black"
+            className="flex flex-col items-center py-1 px-2 rounded-xl text-red-600 font-black"
           >
             <div className="bg-red-600 text-white p-1 rounded-full animate-bounce">
-              <PhoneCall size={14} />
+              <PhoneCall size={13} />
             </div>
-            <span className="text-[10px] mt-0.5">Call 112</span>
+            <span className="text-[9px] mt-0.5">Call 112</span>
           </a>
         </div>
       </div>

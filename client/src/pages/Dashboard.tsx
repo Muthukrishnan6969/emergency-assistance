@@ -1,19 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import SOSButton from '../components/SOSButton';
 import ActionCard from '../components/ActionCard';
 import LocationSharing from '../components/LocationSharing';
-import { Ambulance, ShieldAlert, Flame, PhoneCall, Map, BookOpen, ChevronRight, Activity, Zap } from 'lucide-react';
+import AIDispatchModal from '../components/AIDispatchModal';
+import { 
+  Ambulance, 
+  ShieldAlert, 
+  Flame, 
+  PhoneCall, 
+  Map, 
+  BookOpen, 
+  ChevronRight, 
+  Activity, 
+  Zap, 
+  Sparkles, 
+  Radio, 
+  Mic 
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
+  const [isAIModalOpen, setIsAIModalOpen] = useState<boolean>(false);
+  const [selectedScenario, setSelectedScenario] = useState<string>('');
+
+  const triggerAIWithScenario = (scenario: string) => {
+    setSelectedScenario(scenario);
+    setIsAIModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20 sm:pb-12">
       <Header />
       
       <main className="container mx-auto px-4 max-w-lg mt-5 space-y-6">
+        
         {/* Main SOS Trigger Button */}
         <SOSButton />
+
+        {/* AI AUTO-DISPATCH & INTIMATION HERO CARD */}
+        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
+          
+          <div className="flex items-start justify-between">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-2.5 bg-gradient-to-tr from-red-600 to-indigo-600 rounded-2xl shadow-md animate-pulse">
+                <Sparkles size={22} className="text-yellow-300" />
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <h2 className="font-black text-base sm:text-lg tracking-tight leading-tight">
+                    AI Auto-Tracking & Dispatch
+                  </h2>
+                </div>
+                <p className="text-xs text-indigo-200 mt-0.5">
+                  Locks GPS & auto-intimates nearest Ambulance & Fire units
+                </p>
+              </div>
+            </div>
+            <span className="bg-red-600/90 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse shrink-0">
+              Live AI
+            </span>
+          </div>
+
+          {/* Quick 1-Tap Trigger Buttons */}
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <button
+              onClick={() => triggerAIWithScenario('Cardiac arrest, collapsed person, severe chest pain')}
+              className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 p-2.5 rounded-xl text-left transition-all flex items-center space-x-2"
+            >
+              <span className="text-base">❤️</span>
+              <span className="text-xs font-bold text-slate-200">Heart / CPR</span>
+            </button>
+
+            <button
+              onClick={() => triggerAIWithScenario('Major building fire with heavy smoke & trapped victims')}
+              className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 p-2.5 rounded-xl text-left transition-all flex items-center space-x-2"
+            >
+              <span className="text-base">🔥</span>
+              <span className="text-xs font-bold text-slate-200">Structure Fire</span>
+            </button>
+          </div>
+
+          <div className="mt-3.5 flex items-center space-x-2">
+            <button
+              onClick={() => triggerAIWithScenario('')}
+              className="flex-1 py-3 bg-gradient-to-r from-red-600 via-rose-600 to-indigo-600 hover:from-red-700 hover:to-indigo-700 text-white rounded-xl font-black text-xs sm:text-sm shadow-md flex items-center justify-center space-x-2 transition-all active:scale-98 cursor-pointer"
+            >
+              <Radio size={16} className="text-yellow-300 animate-pulse" />
+              <span>Launch AI Auto-Intimation</span>
+            </button>
+
+            <button
+              onClick={() => triggerAIWithScenario('')}
+              className="p-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-200 hover:text-white transition-all"
+              title="Voice Assisted Dispatch"
+            >
+              <Mic size={18} />
+            </button>
+          </div>
+        </div>
         
         {/* Quick Emergency Navigation Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -127,6 +213,13 @@ const Dashboard: React.FC = () => {
         {/* Location Sharing Card */}
         <LocationSharing />
       </main>
+
+      {/* AI Emergency Dispatch Modal */}
+      <AIDispatchModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        initialScenario={selectedScenario}
+      />
     </div>
   );
 };

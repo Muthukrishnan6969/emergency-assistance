@@ -15,7 +15,12 @@ const AdminDashboard: React.FC = () => {
   const fetchData = async (model: string) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/data/${model}`, {
+      const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const endpoint = model === 'incidents' 
+        ? `${backendUrl}/api/incidents` 
+        : `${backendUrl}/api/admin/data/${model}`;
+        
+      const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response.data);
@@ -41,6 +46,9 @@ const AdminDashboard: React.FC = () => {
           Admin Panel
         </div>
         <nav className="flex-1 p-4 space-y-2">
+          <button onClick={() => setActiveTab('incidents')} className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'incidents' ? 'bg-red-600 font-bold' : 'hover:bg-gray-800'}`}>
+            <Activity size={18} className="mr-3 text-yellow-400 animate-pulse" /> AI Dispatches
+          </button>
           <button onClick={() => setActiveTab('hospitals')} className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'hospitals' ? 'bg-red-600' : 'hover:bg-gray-800'}`}>
             <MapPin size={18} className="mr-3" /> Hospitals
           </button>
@@ -76,23 +84,47 @@ const AdminDashboard: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-100 text-gray-700 text-sm uppercase">
-                  <th className="p-4">Name / Title</th>
-                  <th className="p-4">Details</th>
-                  <th className="p-4">Actions</th>
+                  <th className="p-4">{activeTab === 'incidents' ? 'Incident / Type' : 'Name / Title'}</th>
+                  <th className="p-4">{activeTab === 'incidents' ? 'Location & Responders' : 'Details'}</th>
+                  <th className="p-4">{activeTab === 'incidents' ? 'Status' : 'Actions'}</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item) => (
                   <tr key={item._id} className="border-b hover:bg-gray-50">
                     <td className="p-4 font-medium text-gray-800">
-                      {item.name || item.title}
+                      {activeTab === 'incidents' ? (
+                        <div>
+                          <span className="font-bold text-red-600">{item.incidentId || 'INCIDENT'}</span>
+                          <p className="text-xs text-gray-500 capitalize">{item.emergencyType} • {item.severity}</p>
+                        </div>
+                      ) : (
+                        item.name || item.title
+                      )}
                     </td>
                     <td className="p-4 text-gray-600 text-sm">
-                      {item.address || item.category || item.email}
+                      {activeTab === 'incidents' ? (
+                        <div>
+                          <p className="font-medium text-gray-800 text-xs">{item.address}</p>
+                          <p className="text-[11px] text-gray-500">
+                            Intimated: {item.intimatedServices?.map((s: any) => s.name).join(', ') || 'Ambulance & Fire units'}
+                          </p>
+                        </div>
+                      ) : (
+                        item.address || item.category || item.email
+                      )}
                     </td>
                     <td className="p-4">
-                      <button className="text-blue-600 hover:underline mr-3">Edit</button>
-                      <button className="text-red-600 hover:underline">Delete</button>
+                      {activeTab === 'incidents' ? (
+                        <span className="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-full uppercase">
+                          {item.status || 'Active'}
+                        </span>
+                      ) : (
+                        <>
+                          <button className="text-blue-600 hover:underline mr-3">Edit</button>
+                          <button className="text-red-600 hover:underline">Delete</button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}

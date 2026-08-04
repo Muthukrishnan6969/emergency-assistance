@@ -30,6 +30,7 @@ app.use('/api/services', require('./routes/servicesRoutes'));
 app.use('/api/guides', require('./routes/guidesRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/admin/data', require('./routes/crudRoutes'));
+app.use('/api/incidents', require('./routes/incidentRoutes'));
 
 // Basic Route for testing
 app.get('/', (req, res) => {
